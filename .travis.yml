@@ -3,30 +3,12 @@
 # http://docs.travis-ci.com
 
 after_success:
+  - |
 
-  # If the tests past, Travis will automatically download and execute
-  # the following script(s).
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  # The `commit_build_changes.sh` script will run `npm run build`,
-  # and if that generates changes, it will commit them to the `master`
-  # branch:
-  #
-  #   * ensuring that the content from the `dist/` directory is always
-  #     in sync with the rest of the content
-  #
-  #   * removing the need to execute the build step locally everytime
-  #     a change is made (especially in the case of trivial changes
-  #     such as typos)
-  #
-  # Note: The `commit_build_changes.sh` script will only run if the
-  # commit was made to the `master` branch.
-
-  - curl -sSL "https://raw.githubusercontent.com/h5bp-bot/scripts/0.6.0/commit_build_changes.sh" |
-      bash -s -- --branch "master"
-                 --commands "npm install && npm run build"
-                 --commit-message "Update content from the \`dist\` directory [skip ci]"
+      # Automatically update the content from the `dist/` directory
+      $(npm bin)/commit-changes --branch "master" \
+                                --commands "npm run build" \
+                                --commit-message "Update content from the \`dist\` directory [skip ci]"
 
 env:
   global:
@@ -51,7 +33,7 @@ env:
     #   * GitHub access token, see:
     #     https://help.github.com/articles/creating-an-access-token-for-command-line-use/
 
-    - secure: "mkLhS1ajE7gYNUdHsAfcW6vU9THb2DmPA01PQlXz2y/F3Ld0IwEpqrGGLWyg9ZSYr0g7xq+M46pPiZsfZgCYSLv0flA/RFLmiXcVQfap3BZf8sqTtE3M9AHuy9sxUgus2M9GA7Wupws2KC2PXZM0OT12GSSOCYQCLD3ySD4b4mE="
+    - secure: "OQnRHkXKdvSujTPm0DSXJFrso0zKltkso0e8zF/2GLI7ouv60ELHhYCrWFuoeefSJFbiPeH/9GXnTAv7y+gC08Ba/DSlXGaHl4db5xU/7AazzQR4YaTks6z0CfvlftdlimGOY27tuDU8hMfqHJKybJGcEvFKCVJms/7udYYh+CA="
 
 git:
   depth: 10
@@ -59,4 +41,7 @@ git:
 language: node_js
 
 node_js:
-  - "0.10"
+  - "0.12"
+  - "4"
+
+sudo: false
